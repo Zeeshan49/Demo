@@ -3,32 +3,57 @@
   <h1 class="h3 mb-3">Payment</h1>
 </div>
 
-<form class="form-payment" (ngSubmit)="onSubmit()">
-  <div class="form-label-group">
-    <input type="text" id="cardNo" name="cardNo" [(ngModel)]="cardNo" class="form-control" placeholder="Card No"
-      required autofocus />
-    <label for="cardNo">Card No</label>
+<div *ngIf="isSubmit; else elseBlock">
+  <h4 class="card-header">Payment Sucessfull !</h4>
+  <div class="card-body">
+    <div class="m-2">
+      <h6>ResponseCode: </h6> {{ responseCode }}
+    </div>
+    <div class="m-2">
+      <h6>ApprovalCode: </h6> {{ approvalCode }}
+    </div>
+    <div class="m-2">
+      <h6>DateTime: </h6> {{ dateTime }}
+    </div>
   </div>
-  <div class="form-label-group">
-    <input type="text" id="cardHolder" name="cardHolder" [(ngModel)]="cardHolder" class="form-control"
-      placeholder="Card Holder" required autofocus />
-    <label for="cardHolder">Card Holder</label>
-  </div>
-  <div class="form-label-group">
-    <input type="text" id="amountTrxn" name="amountTrxn" [(ngModel)]="amountTrxn" class="form-control"
-      placeholder="Amount Trxn" required autofocus />
-    <label for="amountTrxn">Amount</label>
-  </div>
-  <div class="form-label-group">
-    <input type="text" id="currencyCode" name="currencyCode" [(ngModel)]="currencyCode" class="form-control"
-      placeholder="Currency Code" required autofocus />
-    <label for="currencyCode">Currency</label>
-  </div>
+</div>
 
-  <div class="checkbox mb-3 text-danger" *ngIf="error">
-    Please try again.
-  </div>
-  <button type="submit" class="btn btn-lg btn-primary btn-block" [disabled]="busy">
-    Pay
-  </button>
-</form>
+<!-- If Payment is sucussfull -->
+<ng-template #elseBlock>
+
+  <form class="form-payment" (ngSubmit)="onSubmit()">
+
+    <div class="form-label-group">
+      <input type="text" id="cardNo" name="cardNo" [(ngModel)]="cardNo" class="form-control" placeholder="Card No"
+        required autofocus />
+      <label for="cardNo">Card No</label>
+    </div>
+    <div class="form-label-group">
+      <input type="text" id="cardHolder" name="cardHolder" [(ngModel)]="cardHolder" class="form-control"
+        placeholder="Card Holder" required autofocus />
+      <label for="cardHolder">Card Holder</label>
+    </div>
+    <div class="form-label-group">
+      <input type="text" id="amountTrxn" name="amountTrxn" [(ngModel)]="amountTrxn" class="form-control"
+        placeholder="Amount Trxn" required autofocus />
+      <label for="amountTrxn">Amount</label>
+    </div>
+    <div class="form-label-group">
+      <input type="text" id="currencyCode" name="currencyCode" [(ngModel)]="currencyCode" class="form-control"
+        placeholder="Currency Code" required autofocus />
+      <label for="currencyCode">Currency</label>
+    </div>
+
+    <div class="checkbox mb-3 text-danger" *ngIf="error">
+      Please try again.
+    </div>
+    <button type="submit" class="btn btn-lg btn-primary btn-block" [disabled]="busy">
+      Pay
+    </button>
+  </form>
+
+
+
+
+
+</ng-template>

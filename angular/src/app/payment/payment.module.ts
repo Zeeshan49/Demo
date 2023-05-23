@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { PaymentRoutingModule } from './payment-routing.module';
 import { paymentComponent } from './payment.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -11,7 +11,8 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     FormsModule,
-    PaymentRoutingModule
+    PaymentRoutingModule,
+    ReactiveFormsModule
   ]
 })
 export class paymentModule { }

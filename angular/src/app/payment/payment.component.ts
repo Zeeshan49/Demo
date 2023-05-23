@@ -1,9 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AuthService } from '../core';
+import { AuthService, PaymentService } from '../core';
 import { finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
-
+import { DropDownList } from '../core/models/DropDownList';
+import { Payment, PaymentResponse } from '../core/models/payment';
 
 @Component({
   selector: 'app-payment',
@@ -17,22 +18,31 @@ import { Subscription } from 'rxjs';
 //   ngOnInit(): void {
 //   }
 
+
 export class paymentComponent implements OnInit {
   busy = false;
-  cardNo = '';
-  cardHolder='';
-  amountTrxn='';
-  currencyCode='';
   error = false;
-  private subscription: Subscription | null = null;
+  isSubmit = false;
+
+  cardNo = 4712345601012222;
+  cardHolder = 'Ahmed Mohamed';
+  amountTrxn = 1000;
+  currencyCode = 'USD';
+
+  //only to Show Response
+  responseCode = '';
+  message = '';
+  approvalCode = '';
+  dateTime = '';
+
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService
-  ) {}
+    private paymentService: PaymentService
+  ) { }
   ngOnInit(): void {
- 
+
   }
   onSubmit() {
     if (!this.cardNo) {
@@ -40,23 +50,61 @@ export class paymentComponent implements OnInit {
     }
     this.busy = true;
     const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
-    console.log(this.cardNo)
-    console.log(this.cardHolder)
-    console.log(this.amountTrxn)
-    console.log(this.currencyCode)
+
+    // const payment: Payment = {
+    //   cardNo: this.cardNo,
+    //   cardHolder: this.cardHolder,
+    //   amountTrxn: this.amountTrxn,
 
 
+    //   currencyCode: getCrrencyCode(this.currencyCode),
+    //   processingCode: getProcessingCode(),
+    //   systemTraceNr: getSystemTraceNr(),
+    //   functionCode: getFunctionCode()
+    // };
+    // console.log(payment)
+    this.paymentService
+      .SavePayment(this.cardNo, this.cardHolder, this.amountTrxn,
+        getCrrencyCode(this.currencyCode), getProcessingCode(), getSystemTraceNr(), getFunctionCode())
 
-    // this.authService
-    //   .login(this.cardNo, this.password)
-    //   .pipe(finalize(() => (this.busy = false)))
-    //   .subscribe(
-    //     () => {
-    //       this.router.navigate([returnUrl]);
-    //     },
-    //     () => {
-    //       this.loginError = true;
-    //     }
-    //   );
+      .pipe(finalize(() => (this.busy = false)))
+      .subscribe(
+        (res: PaymentResponse) => {
+          console.log(res)
+          if (res.message === "Success") {
+            this.isSubmit = true
+            this.responseCode = res.responseCode,
+              this.approvalCode = res.approvalCode,
+              this.dateTime = res.dateTime,
+              this.message = res.message
+            // this.router.navigate([returnUrl]);
+          }
+        },
+        () => {
+          this.error = true;
+        }
+      );
   }
+
+
+  CurrencyList: DropDownList[] = [
+    { code: "AFN", text: "Afghanistan Afghanis – AFN" },
+    { code: "USD", text: "United States Dollars – USD" }
+  ]
+}
+
+const getCrrencyCode = (code: string) => {
+  return 840
+}
+
+const getProcessingCode = () => {
+  return 999000
+}
+
+const getSystemTraceNr = () => {
+  return 36
+}
+
+const getFunctionCode = () => {
+  return 1324
 }

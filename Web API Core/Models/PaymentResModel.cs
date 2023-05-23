@@ -4,7 +4,7 @@
     {
         public int ResponseCode { get; set; }
         public int ApprovalCode { get; set; }
-        public DateTime DateTime { get; set; }
+        public string DateTime { get; set; }
 
     }
 }

@@ -20,10 +20,7 @@ import { AuthService } from './core';
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto">
-            <li class="nav-item" routerLinkActive="active">
-              <a class="nav-link" routerLink="demo-apis">Demo APIs</a>
-            </li>
+          <ul class="navbar-nav me-auto">           
             <li class="nav-item" routerLinkActive="active">
               <a class="nav-link" routerLink="payment">Payment</a>
             </li>

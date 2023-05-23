@@ -27,7 +27,7 @@ namespace Web_API_Core.Controllers
                 ApprovalCode = 123123,
                 ResponseCode = 0,
                 Message="Success",
-                DateTime= new DateTime(202102261200)
+                DateTime= "202102261200"
 
             });
         }

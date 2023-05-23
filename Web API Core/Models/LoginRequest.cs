@@ -3,6 +3,11 @@ using System.Text.Json.Serialization;
 
 namespace Web_API_Core.Models
 {
+
+    public class RSALoginRequest
+    {
+        public string Data { get; set; }
+    }
     public class LoginRequest
     {
 

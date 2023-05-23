@@ -5,7 +5,7 @@ import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
 import { map, tap, delay, finalize } from 'rxjs/operators';
 import { ApplicationUser } from '../models/application-user';
 import { environment } from 'src/environments/environment';
-
+import { RSAHelper } from 'src/app/core/utilities/rsaHelper';
 interface LoginResult {
   username: string;
   role: string;
@@ -39,7 +39,7 @@ export class AuthService implements OnDestroy {
     }
   }
 
-  constructor(private router: Router, private http: HttpClient) {
+  constructor(private router: Router, private http: HttpClient, private rsaHelper: RSAHelper) {
     window.addEventListener('storage', this.storageEventListener.bind(this));
   }
 
@@ -48,8 +48,13 @@ export class AuthService implements OnDestroy {
   }
 
   login(username: string, password: string) {
+    const user = {
+      Username: username,
+      Password: password
+    }
+    const encJsonUser = this.rsaHelper.encryptWithPublicKey(JSON.stringify(user));
     return this.http
-      .post<LoginResult>(`${this.apiUrl}/login`, { username, password })
+      .post<LoginResult>(`${this.apiUrl}/login`,  { Data: encJsonUser })
       .pipe(
         map((x) => {
           this._user.next({
@@ -75,7 +80,7 @@ export class AuthService implements OnDestroy {
       )
       .subscribe();
   }
- 
+
 
   setLocalStorage(x: LoginResult) {
     localStorage.setItem('access_token', x.accessToken);
@@ -98,6 +103,6 @@ export class AuthService implements OnDestroy {
     return expires.getTime() - Date.now();
   }
 
- 
- 
+
+
 }

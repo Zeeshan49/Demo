@@ -1,19 +1,19 @@
 <div class="text-center mb-4">
 
-  <h1 class="h3 mb-3">Payment</h1>
+  <h4 class="h3 mb-3">Payment {{message}} </h4>
 </div>
 
 <div *ngIf="isSubmit; else elseBlock">
-  <h4 class="card-header">Payment Sucessfull !</h4>
+  <h4 class="card-header"></h4>
   <div class="card-body">
     <div class="m-2">
-      <h6>ResponseCode: </h6> {{ responseCode }}
+      <h6>ResponseCode: {{ responseCode }}</h6>
     </div>
     <div class="m-2">
-      <h6>ApprovalCode: </h6> {{ approvalCode }}
+      <h6>ApprovalCode: {{ approvalCode }}</h6>
     </div>
     <div class="m-2">
-      <h6>DateTime: </h6> {{ dateTime }}
+      <h6>DateTime: {{ dateTime }}</h6>
     </div>
   </div>
 </div>

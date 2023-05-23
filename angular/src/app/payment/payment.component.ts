@@ -19,7 +19,7 @@ import { Payment, PaymentResponse } from '../core/models/payment';
 //   }
 
 
-export class paymentComponent implements OnInit {
+export class paymentComponent implements OnInit, OnDestroy {
   busy = false;
   error = false;
   isSubmit = false;
@@ -42,7 +42,11 @@ export class paymentComponent implements OnInit {
     private paymentService: PaymentService
   ) { }
   ngOnInit(): void {
+    this.isSubmit = false;
+  }
 
+  ngOnDestroy(): void {
+    this.isSubmit = false;
   }
   onSubmit() {
     if (!this.cardNo) {

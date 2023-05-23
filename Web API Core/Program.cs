@@ -77,28 +77,11 @@ builder.Services.AddAuthentication(options =>
 //Services
 builder.Services.AddScoped<IUserService, UserService>();
 
-
 //CORS
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
 builder.Services.AddCors(c =>
 {
     c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 });
-
-//builder.Services.AddCors(options =>
-//{
-
-//    options.AddPolicy(name: MyAllowSpecificOrigins,
-//                      builder =>
-//                      {
-
-//                          builder.WithOrigins("*",
-//                              "http://localhost:4200",
-//                                            "https://localhost:4200");
-//                      });
-
-//});
 
 var app = builder.Build();
 

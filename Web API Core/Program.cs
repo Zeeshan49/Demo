@@ -82,6 +82,8 @@ builder.Services.AddAuthentication(options =>
 //Services
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IRSAHelper, RSAHelper>();
+builder.Services.AddScoped<IAESHelper, AESHelper>();
+
 
 
 

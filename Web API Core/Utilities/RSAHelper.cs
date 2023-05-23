@@ -20,8 +20,18 @@ namespace BusinessCore.Services
 
         public string Decrypt(string encrypted)
         {
-            var decryptedBytes = PrivateKey.Decrypt(Convert.FromBase64String(encrypted), false);
-            return Encoding.UTF8.GetString(decryptedBytes, 0, decryptedBytes.Length);
+            try
+            {
+                var decryptedBytes = PrivateKey.Decrypt(Convert.FromBase64String(encrypted), false);
+                return Encoding.UTF8.GetString(decryptedBytes, 0, decryptedBytes.Length);
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+         
         }
 
         private RSACryptoServiceProvider GetPrivateKeyFromPemFile()

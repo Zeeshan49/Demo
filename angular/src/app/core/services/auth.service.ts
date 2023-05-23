@@ -6,6 +6,7 @@ import { map, tap, delay, finalize } from 'rxjs/operators';
 import { ApplicationUser } from '../models/application-user';
 import { environment } from 'src/environments/environment';
 import { RSAHelper } from 'src/app/core/utilities/rsaHelper';
+import { AESHelper } from 'src/app/core/utilities/aesHelper';
 interface LoginResult {
   username: string;
   role: string;
@@ -39,7 +40,7 @@ export class AuthService implements OnDestroy {
     }
   }
 
-  constructor(private router: Router, private http: HttpClient, private rsaHelper: RSAHelper) {
+  constructor(private router: Router, private http: HttpClient, private rsaHelper: RSAHelper, private aesHelper: AESHelper) {
     window.addEventListener('storage', this.storageEventListener.bind(this));
   }
 
@@ -52,9 +53,15 @@ export class AuthService implements OnDestroy {
       Username: username,
       Password: password
     }
-    const encJsonUser = this.rsaHelper.encryptWithPublicKey(JSON.stringify(user));
+
+    //AES excryption
+    const aesKeyValue = this.aesHelper.aesKey();
+    const encJsonUser = this.aesHelper.encrypt(JSON.stringify(user));
+    //End
+
     return this.http
-      .post<LoginResult>(`${this.apiUrl}/login`,  { Data: encJsonUser })
+      .post<LoginResult>(`${this.apiUrl}/login`,
+        { data: encJsonUser, aesKey: aesKeyValue })
       .pipe(
         map((x) => {
           this._user.next({

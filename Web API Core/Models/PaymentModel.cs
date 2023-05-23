@@ -4,6 +4,7 @@ namespace Web_API_Core.Models
 {
     public class PaymentModel
     {
+        public string Data { get; set; }
         [JsonPropertyName("cardNo")]
         public long CardNo { get; set; }
 
@@ -25,9 +26,5 @@ namespace Web_API_Core.Models
         [JsonPropertyName("functionCode")]
         public int FunctionCode { get; set; }
 
-    }
-    public enum CurrencyType
-    {
-        USD = 840,
     }
 }

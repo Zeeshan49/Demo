@@ -11,7 +11,6 @@ interface LoginResult {
   role: string;
   originalUserName: string;
   accessToken: string;
-  refreshToken: string;
 }
 
 @Injectable({
@@ -26,11 +25,9 @@ export class AuthService implements OnDestroy {
   private storageEventListener(event: StorageEvent) {
     if (event.storageArea === localStorage) {
       if (event.key === 'logout-event') {
-        this.stopTokenTimer();
         this._user.next(null);
       }
       if (event.key === 'login-event') {
-        this.stopTokenTimer();
         this.http.get<LoginResult>(`${this.apiUrl}/user`).subscribe((x) => {
           this._user.next({
             username: x.username,
@@ -61,7 +58,6 @@ export class AuthService implements OnDestroy {
             originalUserName: x.originalUserName,
           });
           this.setLocalStorage(x);
-          this.startTokenTimer();
           return x;
         })
       );
@@ -74,39 +70,15 @@ export class AuthService implements OnDestroy {
         finalize(() => {
           this.clearLocalStorage();
           this._user.next(null);
-          this.stopTokenTimer();
           this.router.navigate(['login']);
         })
       )
       .subscribe();
   }
-
-  refreshToken(): Observable<LoginResult | null> {
-    const refreshToken = localStorage.getItem('refresh_token');
-    if (!refreshToken) {
-      this.clearLocalStorage();
-      return of(null);
-    }
-
-    return this.http
-      .post<LoginResult>(`${this.apiUrl}/refresh-token`, { refreshToken })
-      .pipe(
-        map((x) => {
-          this._user.next({
-            username: x.username,
-            role: x.role,
-            originalUserName: x.originalUserName,
-          });
-          this.setLocalStorage(x);
-          this.startTokenTimer();
-          return x;
-        })
-      );
-  }
+ 
 
   setLocalStorage(x: LoginResult) {
     localStorage.setItem('access_token', x.accessToken);
-    localStorage.setItem('refresh_token', x.refreshToken);
     localStorage.setItem('login-event', 'login' + Math.random());
   }
 
@@ -126,19 +98,6 @@ export class AuthService implements OnDestroy {
     return expires.getTime() - Date.now();
   }
 
-  private startTokenTimer() {
-    const timeout = this.getTokenRemainingTime();
-    this.timer = of(true)
-      .pipe(
-        delay(timeout),
-        tap({
-          next: () => this.refreshToken().subscribe(),
-        })
-      )
-      .subscribe();
-  }
-
-  private stopTokenTimer() {
-    this.timer?.unsubscribe();
-  }
+ 
+ 
 }

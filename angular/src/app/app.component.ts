@@ -6,7 +6,7 @@ import { AuthService } from './core';
   template: `
     <header>
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-        <a class="navbar-brand" routerLink="">JWT Auth Demo</a>
+        <a class="navbar-brand" routerLink="">Demo</a>
         <button
           class="navbar-toggler"
           type="button"
@@ -25,7 +25,7 @@ import { AuthService } from './core';
               <a class="nav-link" routerLink="demo-apis">Demo APIs</a>
             </li>
             <li class="nav-item" routerLinkActive="active">
-              <a class="nav-link" routerLink="management">Management Area</a>
+              <a class="nav-link" routerLink="payment">Payment</a>
             </li>
           </ul>
           <div class="form-inline">

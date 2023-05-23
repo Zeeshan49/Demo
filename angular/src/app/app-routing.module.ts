@@ -15,10 +15,10 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'demo-apis', component: DemoApisComponent, canActivate: [AuthGuard] },
   {
-    path: 'management',
+    path: 'payment',
     loadChildren: () =>
-      import('./management/management.module').then((m) => m.ManagementModule),
-    canActivate: [AuthGuard],
+      import('./payment/payment.module').then((m) => m.paymentModule),
+    // canActivate: [AuthGuard],
   },
   { path: '**', redirectTo: '' },
 ];
